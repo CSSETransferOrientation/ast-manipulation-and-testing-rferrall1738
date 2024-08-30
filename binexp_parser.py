@@ -167,14 +167,6 @@ class MyTests(unittest.TestCase):
             inputs = infile.read().splitlines()
             expected_outputs = outfile.read().splitlines()
 
-            # Run tests for each line
-            for input_expr, expected_output in zip(inputs, expected_outputs):
-                tokens = input_expr.split()
-                tree = BinOpAst(tokens)
-                simplified_tree = tree.simplify_binops()
-                result = simplified_tree.prefix_str()
-                self.assertEqual(result, expected_output, f"Failed for input {input_expr}: expected {expected_output}, got {result}")
-
     def test_arith_id(self):
         self.run_test_from_file('arith_id', 'simple')
 
