@@ -137,19 +137,7 @@ class BinOpAst():
             if right.val == "0":
                 return right
 
-        pass
-
-    
-    def constant_fold(self):
-        """
-        Fold constants,
-        e.g. 1 + 2 = 3
-        e.g. x + 2 = x + 2
-        """
-        # Optionally, IMPLEMENT ME! This is a bit more challenging. 
-        # You also likely want to add an additional node type to your AST
-        # to represent identifiers.
-        pass            
+        pass      
 
     def simplify_binops(self):
         """
@@ -162,8 +150,42 @@ class BinOpAst():
         self.additive_identity()
         self.multiplicative_identity()
         self.mult_by_zero()
-        self.constant_fold()
+        return self
 
+class MyTests(unittest.TestCase):
+    testbench_dir = 'testbench'
+
+    def run_test_from_file(self, test_type, test_name):
+        """
+        Run a test case using input and output files.
+        """
+        input_file = os.path.join(self.testbench_dir, test_type, 'inputs', test_name)
+        output_file = os.path.join(self.testbench_dir, test_type, 'outputs', test_name)
+
+        # Read input and output files
+        with open(input_file, 'r') as infile, open(output_file, 'r') as outfile:
+            inputs = infile.read().splitlines()
+            expected_outputs = outfile.read().splitlines()
+
+            # Run tests for each line
+            for input_expr, expected_output in zip(inputs, expected_outputs):
+                tokens = input_expr.split()
+                tree = BinOpAst(tokens)
+                simplified_tree = tree.simplify_binops()
+                result = simplified_tree.prefix_str()
+                self.assertEqual(result, expected_output, f"Failed for input {input_expr}: expected {expected_output}, got {result}")
+
+    def test_arith_id(self):
+        self.run_test_from_file('arith_id', 'simple')
+
+    def test_mult_id(self):
+        self.run_test_from_file('mult_id', 'simple')
+
+    def test_mult_by_zero(self):
+        self.run_test_from_file('mult_by_zero', 'simple')
+
+    def test_constant_fold(self):
+        self.run_test_from_file('constant_fold', 'simple')
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(argv=[''], verbosity=2, exit=False)
