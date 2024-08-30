@@ -84,6 +84,20 @@ class BinOpAst():
         x + 0 = x
         """
         # IMPLEMENT ME!
+        if self is None:
+            return None
+        if self.val== '+':
+
+            left = self.left.additive_identity()
+            right = self.right.additive_identity()
+
+            if left.val== '0':
+                return right
+            if right.val == '0':
+                return left
+            return self('+',left,right)
+        else:
+            return self
         pass
                         
     def multiplicative_identity(self):
@@ -92,6 +106,18 @@ class BinOpAst():
         x * 1 = x
         """
         # IMPLEMENT ME!
+        if self is None:
+            return None
+        if self.val == '*':
+            left = self.left.multiplicative_identity()
+            right = self.right.multiplicative_identity()
+
+            if left.val == '1':
+                return right
+            if right.val == '1':
+                return left
+            else:
+                return self 
         pass
     
     
@@ -101,7 +127,18 @@ class BinOpAst():
         x * 0 = 0
         """
         # Optionally, IMPLEMENT ME! (I'm pretty easy)
+        if self is None:
+            return None 
+        if self.value == '0':
+            left = self.left.mult_by_zero()
+            right = self.right.mult_by_zero()
+            if left.val == "0":
+                return left
+            if right.val == "0":
+                return right
+
         pass
+
     
     def constant_fold(self):
         """
