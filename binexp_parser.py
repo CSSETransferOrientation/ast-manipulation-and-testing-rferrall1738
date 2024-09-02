@@ -84,8 +84,11 @@ class BinOpAst():
         x + 0 = x
         """
         # IMPLEMENT ME!
+        #;;> You likely can't ever get here because the None object isn't callable. A number should be the base case
         if self is None:
             return None
+
+        # ;;> You also want to recur on '*' to handle things like "* 10 + 1 0"
         if self.val== '+':
 
             left = self.left.additive_identity()
@@ -95,6 +98,7 @@ class BinOpAst():
                 return right
             if right.val == '0':
                 return left
+            # ;;> This doesn't work, I think you just want to return self here
             return self('+',left,right)
         else:
             return self
@@ -166,6 +170,8 @@ class MyTests(unittest.TestCase):
         with open(input_file, 'r') as infile, open(output_file, 'r') as outfile:
             inputs = infile.read().splitlines()
             expected_outputs = outfile.read().splitlines()
+            #;;> This isn't actually running any tests, you are just reading in the files here.
+            #;;> You need to call the specific functions and compare the generated output to the expected
 
     def test_arith_id(self):
         self.run_test_from_file('arith_id', 'simple')
